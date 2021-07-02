@@ -7,12 +7,31 @@ import * as CellColors from '../Constants/CellColors';
 
 class GridCell extends React.Component {
     colorGenerator = () => {
+        let showSeeds = false;
+
         let colors = [];
         if (this.props.cellType === CellTypes.OCEAN) {
           colors = CellColors.OCEAN;
         } else if(this.props.cellType === CellTypes.BEACH) {
           colors = CellColors.BEACH;
+        } 
+
+        if (!showSeeds){
+          // dont show seeds
+          if(this.props.cellType === CellTypes.BEACH_SEED) {
+            colors = CellColors.BEACH;
+          } else if(this.props.cellType === CellTypes.OCEAN_SEED) {
+            colors = CellColors.OCEAN;
+          }
+        } else {
+          // show seeds
+          if(this.props.cellType === CellTypes.BEACH_SEED) {
+            colors = CellColors.BEACH_SEED;
+          } else if(this.props.cellType === CellTypes.OCEAN_SEED) {
+            colors = CellColors.OCEAN_SEED;
+          }
         }
+
         let randomColor = colors[Math.floor(Math.random()*colors.length)];
         return randomColor;
     }
