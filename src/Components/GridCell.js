@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import GridCellPixel from './GridCellPixel';
 import * as CellTypes from '../Constants/CellTypes';
 import * as CellColors from '../Constants/CellColors';
-
+import * as SHOW_SEEDS from '../Constants/ShowSeeds';
 
 class GridCell extends React.Component {
     colorGenerator = () => {
-        let showSeeds = false;
+        let showSeeds = SHOW_SEEDS.SHOW_SEEDS;
 
         let colors = [];
         if (this.props.cellType === CellTypes.OCEAN) {
