@@ -7,7 +7,7 @@ class Grid extends React.Component {
         super(props);
         this.updateNumber = 0;
         this.seedsTotal = 5;
-        this.seedTypes = [CellTypes.OCEAN, CellTypes.BEACH];
+        this.seedTypes = [CellTypes.OCEAN, CellTypes.BEACH, CellTypes.DIRT];
         this.seeds = [];
         this.grid = [];
     }

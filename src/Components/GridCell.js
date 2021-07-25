@@ -1,28 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GridCellPixel from './GridCellPixel';
-import * as CellTypes from '../Constants/CellTypes';
 import * as CellColors from '../Constants/CellColors';
+import * as CellTypes from '../Constants/CellTypes';
 import * as SHOW_SEEDS from '../Constants/ShowSeeds';
 
 class GridCell extends React.Component {
     colorGenerator = () => {
         let showSeeds = SHOW_SEEDS.SHOW_SEEDS;
 
-        let colors = [];
-        if (this.props.cellType === CellTypes.OCEAN) {
-          colors = CellColors.OCEAN;
-        } else if(this.props.cellType === CellTypes.BEACH) {
-          colors = CellColors.BEACH;
-        } 
+
+        let colors = CellColors.BLOCK_COLORS[this.props.cellType];
 
         if (showSeeds && this.props.isSeed) {
           // show seeds
-          if(this.props.cellType === CellTypes.BEACH) {
-            colors = CellColors.BEACH_SEED;
-          } else if(this.props.cellType === CellTypes.OCEAN) {
-            colors = CellColors.OCEAN_SEED;
-          }
+          colors = CellColors.BLOCK_COLORS[CellTypes.SEED_BLOCKS[this.props.cellType]];
         }
 
         let randomColor = colors[Math.floor(Math.random()*colors.length)];
