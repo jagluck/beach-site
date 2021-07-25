@@ -16,18 +16,11 @@ class GridCell extends React.Component {
           colors = CellColors.BEACH;
         } 
 
-        if (!showSeeds){
-          // dont show seeds
-          if(this.props.cellType === CellTypes.BEACH_SEED) {
-            colors = CellColors.BEACH;
-          } else if(this.props.cellType === CellTypes.OCEAN_SEED) {
-            colors = CellColors.OCEAN;
-          }
-        } else {
+        if (showSeeds && this.props.isSeed) {
           // show seeds
-          if(this.props.cellType === CellTypes.BEACH_SEED) {
+          if(this.props.cellType === CellTypes.BEACH) {
             colors = CellColors.BEACH_SEED;
-          } else if(this.props.cellType === CellTypes.OCEAN_SEED) {
+          } else if(this.props.cellType === CellTypes.OCEAN) {
             colors = CellColors.OCEAN_SEED;
           }
         }
@@ -56,6 +49,7 @@ GridCell.propTypes = {
     column: PropTypes.number,
     row: PropTypes.number,
     cellType: PropTypes.number,
+    isSeed: PropTypes.bool,
 };
 
 export default GridCell;
