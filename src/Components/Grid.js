@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import GridCell from './GridCell';
+import GridCellPixel from './GridCellPixel';
 import * as CellTypes from '../Constants/CellTypes';
+import { colorGenerator, createCellInfo } from '../Util/Grid';
 
 class Grid extends React.Component {
     constructor(props) {
         super(props);
         this.updateNumber = 0;
         this.seedsTotal = 5;
-        this.seedTypes = [CellTypes.OCEAN, CellTypes.BEACH, CellTypes.DIRT];
+        this.seedTypes = [CellTypes.OCEAN, CellTypes.ICE, CellTypes.SNOW];
         this.seeds = [];
         this.grid = [];
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.setState({ time: Date.now() }), 500);
+        this.interval = setInterval(() => this.setState({ time: Date.now() }), 100);
     }
 
     componentWillUnmount() {
@@ -23,10 +25,7 @@ class Grid extends React.Component {
     getRandom(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min; 
-    }
-    getDist([x1,y1],[x2,y2]){
-        return Math.sqrt( Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) );
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     render() {
@@ -45,7 +44,7 @@ class Grid extends React.Component {
                 for (let i = 0; i < this.seedTypes.length; i++) {
                     for (let j = 0; j < this.seedsTotal; j++) {
                         if (this.seeds[i][j][0] > -5){
-                            this.seeds[i][j] = [(this.seeds[i][j][0] - 1), this.seeds[i][j][1]];
+                            this.seeds[i][j] = [(this.seeds[i][j][0]) - 1, this.seeds[i][j][1]];
                         } else {
                             this.seeds[i][j] = [15,this.getRandom(0,9)];
                         }
@@ -55,32 +54,36 @@ class Grid extends React.Component {
         }
 
         let tempGrid = [];
-        for (let column = 0; column < gridLength; column++) {
-            let thisColumn = [];
-            for (let row = 0; row < gridLength; row++) {
-
-                let dists = [];
-                for (let i = 0; i < this.seedTypes.length; i++) {
-                    let theseSeeds = [];
-                    for (let j = 0; j < this.seedsTotal; j++) {
-                        theseSeeds.push(this.getDist(this.seeds[i][j], [row, column]));
-                    }
-                    dists.push(Math.min(...theseSeeds));
-                }
-
-                let minDist = dists.indexOf(Math.min(...dists));
-                let thisColor = this.seedTypes[minDist];
+        for (let row = 0; row < gridLength; row++) {
+            let thisRow = [];
+            for (let column = 0; column < gridLength; column++) {
 
                 let isSeed = false;
-                if (dists[minDist] === 0){
-                    isSeed = true
-                }
+                let thisType = 0;
 
-                let thisCell = <GridCell column={column} row={row} cellType={thisColor} isSeed={isSeed}></GridCell>
-                thisColumn.push(thisCell);
-                itemList.push(thisCell)
+                [thisType, isSeed] = createCellInfo(this.seeds, this.seedTypes, this.seedsTotal, column, row);
+                let thisCellPixels = []
+                for (let cellRow = 0; cellRow < 12; cellRow++) {
+                    let thisCellPixelsRow = []
+                    for (let cellColumn = 0; cellColumn < 12; cellColumn++) {
+                        let thisCellPixelsColumn = []
+
+                         if (this.grid && this.grid.length > 0 && column < 9) {
+                            let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={this.grid[row][column + 1].props.pixels[cellRow][cellColumn][0].props.color}></GridCellPixel>
+                            thisCellPixelsColumn.push(thisPixel)
+                        } else {
+                            let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={colorGenerator(thisType, isSeed)}></GridCellPixel>
+                            thisCellPixelsColumn.push(thisPixel)
+                        }
+                        thisCellPixelsRow.push(thisCellPixelsColumn);
+                    }
+                    thisCellPixels.push(thisCellPixelsRow);
+                }
+                let thisCell = <GridCell column={column} row={row} cellType={thisType} isSeed={isSeed} pixels={thisCellPixels}></GridCell>
+                thisRow.push(thisCell);
+                itemList.push(thisCell)        
             }
-            tempGrid.push(thisColumn);
+            tempGrid.push(thisRow);
         }
         this.grid = tempGrid;
 

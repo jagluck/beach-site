@@ -10,7 +10,7 @@ class Info extends React.Component {
     render() {
       return (
         <div className="Info">
-          <span>Summer Fun!!</span>
+          <span>Winter Fun!!</span>
           {/* <br></br>
           <br></br>
           <span>Show Seeds?</span>
