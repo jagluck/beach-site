@@ -12,14 +12,10 @@
 }
 
 .Grid {
-  width:600px;
-  height:600px;
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
   display: grid;
-  grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
-  grid-template-rows: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
 }
 
 .GridCell {

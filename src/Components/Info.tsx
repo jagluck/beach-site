@@ -1,19 +1,19 @@
 import React from 'react';
 
-interface Info {
-  showSeeds: boolean;
-}
+// interface Info {
+//   showSeeds: boolean;
+// }
 
 class Info extends React.Component {
-    constructor(props: any) {
-        super(props);
-        this.showSeeds = false;
-    }
+    // constructor(props: any) {
+    //     super(props);
+    //     this.showSeeds = true;
+    // }
 
     render() {
       return (
         <div className="Info">
-          <span>Winter Fun!!</span>
+          <span>Spring Fun!!</span>
           {/* <br></br>
           <br></br>
           <span>Show Seeds?</span>
