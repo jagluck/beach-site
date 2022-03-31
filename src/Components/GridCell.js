@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-
 
 class GridCell extends React.Component {
     render() {

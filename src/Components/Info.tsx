@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+
+interface Info {
+  showSeeds: boolean;
+}
 
 class Info extends React.Component {
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.showSeeds = false;
     }
