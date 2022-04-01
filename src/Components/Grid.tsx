@@ -62,9 +62,9 @@ class Grid extends React.Component {
     }
 
     componentDidMount() {
-        let column_css = '';
-        let row_css = '';
-        for (let i = 0; i < this.gridLength; i++) {
+        let column_css:string = '';
+        let row_css:string = '';
+        for (let i:number = 0; i < this.gridLength; i++) {
             if (i === this.gridLength - 1) {
                 column_css = column_css + '60px';
                 row_css = row_css + '60px';
@@ -73,8 +73,8 @@ class Grid extends React.Component {
                 row_css = row_css + '60px ';
             }
         }
-        let width = String(60 * this.gridLength) + 'px';
-        let height = String(60 * this.gridLength) + 'px';
+        let width:string = String(60 * this.gridLength) + 'px';
+        let height:string = String(60 * this.gridLength) + 'px';
         $('.Grid').css("grid-template-columns", column_css);
         $('.Grid').css("grid-template-rows", row_css);
         $('.Grid').css("width", width);
@@ -94,8 +94,8 @@ class Grid extends React.Component {
 
     render() {
         if (this.seeds.length === 0){
-            for (let i = 0; i < this.seedTypes.length; i++) {
-                let theseSeeds = [];
+            for (let i:number = 0; i < this.seedTypes.length; i++) {
+                let theseSeeds:any[] = [];
                 for (let j = 0; j < this.seedsTotal; j++) {
                     theseSeeds.push([this.getRandom(-20, this.gridLength + 20),this.getRandom(0,9)]);
                 }
@@ -103,23 +103,22 @@ class Grid extends React.Component {
             }
         } 
         let tempGrid = [];
-        let itemList=[];
+        let itemList = [];
         if (this.grid.length === 0) {
              // generate initial terains
              for (let row = 0; row < this.gridLength; row++) {
                 let thisRow = [];
                 for (let column = 0; column < this.gridLength; column++) {
     
-                    let isSeed = false;
-                    let thisType = 0;
+                    let isSeed:boolean = false;
+                    let thisType:number = 0;
     
                     [thisType, isSeed] = createCellInfo(this.seeds, this.seedTypes, this.seedsTotal, column, row);
                     let thisCellPixels = []
                     for (let cellRow = 0; cellRow < 12; cellRow++) {
                         let thisCellPixelsRow = []
-                        for (let cellColumn = 0; cellColumn < 12; cellColumn++) {
+                        for (let cellColumn:number = 0; cellColumn < 12; cellColumn++) {
                             let thisCellPixelsColumn = []
-    
                             let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={colorGenerator(thisType, isSeed)}></GridCellPixel>
                             thisCellPixelsColumn.push(thisPixel)
                             
@@ -152,13 +151,13 @@ class Grid extends React.Component {
             character = this.character2;
         } 
 
-        let charPos = Math.floor(this.gridLength / 2);
+        let charPos:number = Math.floor(this.gridLength / 2);
         let gridWithCharacter = [];
         for (let row = 0; row < this.gridLength; row++) {
             let thisRow = [];
-            for (let column = 0; column < this.gridLength; column++) {
+            for (let column:number = 0; column < this.gridLength; column++) {
                 let thisCellPixels = []
-                for (let cellRow = 0; cellRow < 12; cellRow++) {
+                for (let cellRow:number = 0; cellRow < 12; cellRow++) {
                     let thisCellPixelsRow = []
                     for (let cellColumn = 0; cellColumn < 12; cellColumn++) {
                         let thisCellPixelsColumn = []
@@ -192,7 +191,7 @@ class Grid extends React.Component {
     }
 
     updateGrid(direction : string) {
-        let itemList=[];
+        let itemList = [];
         if (this.seeds.length !== 0) {
             for (let i = 0; i < this.seedTypes.length; i++) {
                 for (let j = 0; j < this.seedsTotal; j++) {
@@ -258,7 +257,6 @@ class Grid extends React.Component {
                             let thisCellPixelsRow = []
                             for (let cellColumn = 0; cellColumn < 12; cellColumn++) {
                                 let thisCellPixelsColumn = []
-        
                                 let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={colorGenerator(thisType, isSeed)}></GridCellPixel>
                                 thisCellPixelsColumn.push(thisPixel)
                                
@@ -281,7 +279,7 @@ class Grid extends React.Component {
 
     onKeyPressHandler = (e : any) => {
         if (e.originalEvent && e.originalEvent.which) {
-            let key = e.originalEvent.which;
+            let key:number = e.originalEvent.which;
             if (key === 37) {
                 // left
                 this.updateGrid('left');
