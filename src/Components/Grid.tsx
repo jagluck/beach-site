@@ -13,8 +13,11 @@ interface Grid {
     grid: any;
     interval: any;
     gridLength : number;
-    character1: character
-    character2: character
+    horseDirection: number;
+    character1: character;
+    character2: character;
+    character3: character;
+    character4: character;
 }
 
 interface character { 
@@ -30,6 +33,7 @@ class Grid extends React.Component {
         this.seeds = [];
         this.gridLength = 11;
         this.grid = [];
+        this.horseDirection = 1;
         this.character1 = { 
             0 : [],
             1 : [],
@@ -58,6 +62,34 @@ class Grid extends React.Component {
             10 : [],
             11 : []
         }
+        this.character3 = { 
+            0 : [],
+            1 : [],
+            2 : [3, 4],
+            3 : [2, 3, 4, 5],
+            4 : [3, 4, 5],
+            5 : [3, 4, 5, 6, 7, 8, 9],
+            6 : [3, 4, 5, 6, 7, 8, 9, 10],
+            7 : [3, 4, 5, 6, 7, 8, 9],
+            8 : [3, 5, 8, 10],
+            9 : [3, 5, 8, 10],
+            10 : [],
+            11 : []
+        }
+        this.character4 = { 
+            0 : [],
+            1 : [3, 4],
+            2 : [2, 3, 4, 5],
+            3 : [3, 4, 5],
+            4 : [3, 4, 5, 6, 7, 8, 9],
+            5 : [3, 4, 5, 6, 7, 8, 9, 10],
+            6 : [2, 3, 4, 5, 6, 7, 8, 9],
+            7 : [2, 4, 7, 9],
+            8 : [4, 7, 9],
+            9 : [],
+            10 : []
+        }
+        
         $('body').off().on('keydown', this.onKeyPressHandler);
     }
 
@@ -147,9 +179,17 @@ class Grid extends React.Component {
 
     addCharacter(gridWithoutCharacter : any, updateNumber: number) {
         let character = this.character1;
-        if ((updateNumber/2) % 2 === 0) {
-            character = this.character2;
-        } 
+        if (this.horseDirection === 1) {
+            if ((updateNumber/2) % 2 === 0) {
+                character = this.character2;
+            } 
+        } else {
+            character = this.character3;
+            if ((updateNumber/2) % 2 === 0) {
+                character = this.character4;
+            } 
+        }
+       
 
         let charPos:number = Math.floor(this.gridLength / 2);
         let gridWithCharacter = [];
@@ -192,6 +232,13 @@ class Grid extends React.Component {
 
     updateGrid(direction : string) {
         let itemList = [];
+
+        if (direction === 'left') {
+            this.horseDirection = 0;
+        } else if (direction === 'right'){
+            this.horseDirection = 1;
+        }
+
         if (this.seeds.length !== 0) {
             for (let i = 0; i < this.seedTypes.length; i++) {
                 for (let j = 0; j < this.seedsTotal; j++) {

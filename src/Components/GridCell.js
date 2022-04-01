@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class GridCell extends React.Component {
+class GridCell extends Component {
     render() {
       return (
-        <div className="GridCell" style={{ background: this.props.color  }}>
+        <div className="GridCell">
           {this.props.pixels}
         </div>
       );
