@@ -5,22 +5,22 @@ import React from 'react';
 // }
 
 class Info extends React.Component {
-    // constructor(props: any) {
-    //     super(props);
-    //     this.showSeeds = true;
-    // }
+  // constructor(props: any) {
+  //     super(props);
+  //     this.showSeeds = true;
+  // }
 
-    render() {
-      return (
-        <div className="Info">
-          <span>Spring Fun!!</span>
-          {/* <br></br>
+  render() {
+    return (
+      <div className="Info">
+        <span>Winter Fun!!</span>
+        {/* <br></br>
           <br></br>
           <span>Show Seeds?</span>
           <input type="checkbox" name="showSeeds" /> */}
-        </div>
-      );
-    }
+      </div>
+    );
   }
+}
 
 export default Info;
