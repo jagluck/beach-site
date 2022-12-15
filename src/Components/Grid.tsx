@@ -3,7 +3,7 @@ import $ from 'jquery';
 import GridCell from './GridCell';
 import GridCellPixel from './GridCellPixel';
 import * as CellTypes from '../Constants/CellTypes';
-import { colorGenerator, createCellInfo } from '../Util/Grid';
+import { colorGenerator, createCellInfo, addFriend } from '../Util/Grid';
 
 interface Grid {
     updateNumber: number;
@@ -129,7 +129,7 @@ class Grid extends React.Component {
             for (let i: number = 0; i < this.seedTypes.length; i++) {
                 let theseSeeds: any[] = [];
                 for (let j = 0; j < this.seedsTotal; j++) {
-                    theseSeeds.push([this.getRandom(-20, this.gridLength + 20), this.getRandom(0, 9)]);
+                    theseSeeds.push([this.getRandom(-10, this.gridLength + 10), this.getRandom(0, 9)]);
                 }
                 this.seeds.push(theseSeeds);
             }
@@ -158,6 +158,9 @@ class Grid extends React.Component {
                         }
                         thisCellPixels.push(thisCellPixelsRow);
                     }
+                    if (isSeed) {
+                        thisCellPixels = addFriend(thisType, thisCellPixels);
+                    }
                     let thisCell = <GridCell column={column} row={row} cellType={thisType} isSeed={isSeed} pixels={thisCellPixels}></GridCell>
                     thisRow.push(thisCell);
                     itemList.push(thisCell)
@@ -169,6 +172,7 @@ class Grid extends React.Component {
         let gridWithCharacter = this.grid;
         gridWithCharacter = this.addCharacter(gridWithCharacter, this.updateNumber);
         this.updateNumber = this.updateNumber + 1;
+
         return (
             <div className="Grid">
                 {gridWithCharacter}
@@ -243,28 +247,28 @@ class Grid extends React.Component {
             for (let i = 0; i < this.seedTypes.length; i++) {
                 for (let j = 0; j < this.seedsTotal; j++) {
                     if (direction === 'down') {
-                        if (this.seeds[i][j][1] > -20) {
+                        if (this.seeds[i][j][1] > -10) {
                             this.seeds[i][j] = [(this.seeds[i][j][0]), this.seeds[i][j][1] - 1];
                         } else {
-                            this.seeds[i][j] = [this.getRandom(0, 9), this.gridLength + 20];
+                            this.seeds[i][j] = [this.getRandom(0, 9), this.gridLength + 10];
                         }
                     } else if (direction === 'up') {
-                        if (this.seeds[i][j][1] < this.gridLength + 20) {
+                        if (this.seeds[i][j][1] < this.gridLength + 10) {
                             this.seeds[i][j] = [(this.seeds[i][j][0]), this.seeds[i][j][1] + 1];
                         } else {
-                            this.seeds[i][j] = [this.getRandom(0, 9), -20];
+                            this.seeds[i][j] = [this.getRandom(0, 9), -10];
                         }
                     } else if (direction === 'right') {
-                        if (this.seeds[i][j][0] > -20) {
+                        if (this.seeds[i][j][0] > -10) {
                             this.seeds[i][j] = [(this.seeds[i][j][0]) - 1, this.seeds[i][j][1]];
                         } else {
-                            this.seeds[i][j] = [this.gridLength + 20, this.getRandom(0, 9)];
+                            this.seeds[i][j] = [this.gridLength + 10, this.getRandom(0, 9)];
                         }
                     } else if (direction === 'left') {
-                        if (this.seeds[i][j][0] < this.gridLength + 20) {
+                        if (this.seeds[i][j][0] < this.gridLength + 10) {
                             this.seeds[i][j] = [(this.seeds[i][j][0]) + 1, this.seeds[i][j][1]];
                         } else {
-                            this.seeds[i][j] = [-20, this.getRandom(0, 9)];
+                            this.seeds[i][j] = [-10, this.getRandom(0, 9)];
                         }
                     }
                 }
@@ -305,11 +309,15 @@ class Grid extends React.Component {
                             for (let cellColumn = 0; cellColumn < 12; cellColumn++) {
                                 let thisCellPixelsColumn = []
                                 let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={colorGenerator(thisType, isSeed)}></GridCellPixel>
+
                                 thisCellPixelsColumn.push(thisPixel)
 
                                 thisCellPixelsRow.push(thisCellPixelsColumn);
                             }
                             thisCellPixels.push(thisCellPixelsRow);
+                        }
+                        if (isSeed) {
+                            thisCellPixels = addFriend(thisType, thisCellPixels);
                         }
                         let thisCell = <GridCell column={column} row={row} cellType={thisType} isSeed={isSeed} pixels={thisCellPixels}></GridCell>
                         thisRow.push(thisCell);

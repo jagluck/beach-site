@@ -1,1 +1,1 @@
-export const SHOW_SEEDS = true;
+export const SHOW_SEEDS = false;
