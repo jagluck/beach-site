@@ -3,7 +3,8 @@ import $ from 'jquery';
 import GridCell from './GridCell';
 import GridCellPixel from './GridCellPixel';
 import * as CellTypes from '../Constants/CellTypes';
-import { colorGenerator, createCellInfo, addFriend } from '../Util/Grid';
+import * as CHARACTERS from '../Constants/Characters';
+import { colorGenerator, createCellInfo, addFriend, buildFriend } from '../Util/Grid';
 
 interface Grid {
     updateNumber: number;
@@ -14,10 +15,6 @@ interface Grid {
     interval: any;
     gridLength: number;
     horseDirection: number;
-    character1: character;
-    character2: character;
-    character3: character;
-    character4: character;
 }
 
 interface character {
@@ -34,61 +31,6 @@ class Grid extends React.Component {
         this.gridLength = 11;
         this.grid = [];
         this.horseDirection = 1;
-        this.character1 = {
-            0: [],
-            1: [],
-            2: [7, 8],
-            3: [6, 7, 8, 9],
-            4: [6, 7, 8],
-            5: [2, 3, 4, 5, 6, 7, 8],
-            6: [1, 2, 3, 4, 5, 6, 7, 8],
-            7: [2, 3, 4, 5, 6, 7, 8],
-            8: [1, 3, 6, 8],
-            9: [1, 3, 6, 8],
-            10: [],
-            11: []
-        }
-        this.character2 = {
-            0: [],
-            1: [7, 8],
-            2: [6, 7, 8, 9],
-            3: [6, 7, 8],
-            4: [2, 3, 4, 5, 6, 7, 8],
-            5: [1, 2, 3, 4, 5, 6, 7, 8],
-            6: [2, 3, 4, 5, 6, 7, 8, 9],
-            7: [2, 4, 7, 9],
-            8: [2, 4, 7],
-            9: [],
-            10: [],
-            11: []
-        }
-        this.character3 = {
-            0: [],
-            1: [],
-            2: [3, 4],
-            3: [2, 3, 4, 5],
-            4: [3, 4, 5],
-            5: [3, 4, 5, 6, 7, 8, 9],
-            6: [3, 4, 5, 6, 7, 8, 9, 10],
-            7: [3, 4, 5, 6, 7, 8, 9],
-            8: [3, 5, 8, 10],
-            9: [3, 5, 8, 10],
-            10: [],
-            11: []
-        }
-        this.character4 = {
-            0: [],
-            1: [3, 4],
-            2: [2, 3, 4, 5],
-            3: [3, 4, 5],
-            4: [3, 4, 5, 6, 7, 8, 9],
-            5: [3, 4, 5, 6, 7, 8, 9, 10],
-            6: [2, 3, 4, 5, 6, 7, 8, 9],
-            7: [2, 4, 7, 9],
-            8: [4, 7, 9],
-            9: [],
-            10: []
-        }
 
         $('body').off().on('keydown', this.onKeyPressHandler);
     }
@@ -182,15 +124,15 @@ class Grid extends React.Component {
     }
 
     addCharacter(gridWithoutCharacter: any, updateNumber: number) {
-        let character = this.character1;
+        let character = CHARACTERS.HORSE_ONE;
         if (this.horseDirection === 1) {
             if ((updateNumber / 2) % 2 === 0) {
-                character = this.character2;
+                character = CHARACTERS.HORSE_TWO;
             }
         } else {
-            character = this.character3;
+            character = CHARACTERS.HORSE_THREE;
             if ((updateNumber / 2) % 2 === 0) {
-                character = this.character4;
+                character = CHARACTERS.HORSE_FOUR;
             }
         }
 
@@ -201,21 +143,22 @@ class Grid extends React.Component {
             let thisRow = [];
             for (let column: number = 0; column < this.gridLength; column++) {
                 let thisCellPixels = []
+
                 for (let cellRow: number = 0; cellRow < 12; cellRow++) {
                     let thisCellPixelsRow = []
                     for (let cellColumn = 0; cellColumn < 12; cellColumn++) {
                         let thisCellPixelsColumn = []
-                        if (row === charPos && column === charPos && this.isInChar(cellColumn, cellRow, character)) {
-                            let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={'#000000'}></GridCellPixel>
-                            thisCellPixelsColumn.push(thisPixel);
-                        } else {
-                            let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={gridWithoutCharacter[row][column].props.pixels[cellRow][cellColumn][0].props.color}></GridCellPixel>
-                            thisCellPixelsColumn.push(thisPixel)
-                        }
+                        let thisPixel = <GridCellPixel column={cellColumn} row={cellRow} color={gridWithoutCharacter[row][column].props.pixels[cellRow][cellColumn][0].props.color}></GridCellPixel>
+                        thisCellPixelsColumn.push(thisPixel)
                         thisCellPixelsRow.push(thisCellPixelsColumn);
                     }
                     thisCellPixels.push(thisCellPixelsRow);
                 }
+
+                if (row === charPos && column === charPos) {
+                    thisCellPixels = buildFriend(thisCellPixels, character);
+                }
+
                 let thisCell = <GridCell column={column} row={row} cellType={gridWithoutCharacter[row][column].props.cellType} isSeed={gridWithoutCharacter[row][column].props.isSeed} pixels={thisCellPixels}></GridCell>
                 thisRow.push(thisCell);
             }
