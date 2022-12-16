@@ -124,7 +124,7 @@ class Grid extends React.Component {
     }
 
     addCharacter(gridWithoutCharacter: any, updateNumber: number) {
-        let character = CHARACTERS.HORSE_ONE;
+        let character: any = CHARACTERS.HORSE_ONE;
         if (this.horseDirection === 1) {
             if ((updateNumber / 2) % 2 === 0) {
                 character = CHARACTERS.HORSE_TWO;
